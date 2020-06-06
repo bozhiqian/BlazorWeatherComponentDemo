@@ -1,0 +1,32 @@
+<!--
+    Visual styles for the Forecast component come from /css/weather.css
+-->
+
+<div class="forecast-item @SelectedCss" @onclick="@HandleOnDetailsSelected">
+    <span class="@Outlook.ToLower()"></span>
+    <div class="temperature">@Temperature&deg;</div>
+    @CustomMessage
+    <p>@Outlook weather expected @DayOfWeek.</p>
+</div>
+
+@code {
+
+    string SelectedCss => IsSelected ? "forecast-item--selected" : String.Empty;
+
+    [Parameter] public bool IsSelected { get; set; } = false;
+
+    [Parameter] public string Outlook { get; set; }
+
+    [Parameter] public int Temperature { get; set; }
+
+    [Parameter] public DayOfWeek DayOfWeek { get; set; }
+
+    [Parameter] public RenderFragment CustomMessage { get; set; }
+
+    [Parameter] public EventCallback<DayOfWeek> OnDetailsSelected { get; set; }
+
+    void HandleOnDetailsSelected()
+    {
+        OnDetailsSelected.InvokeAsync(this.DayOfWeek);
+    }
+}
